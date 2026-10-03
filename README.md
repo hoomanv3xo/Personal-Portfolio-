@@ -112,6 +112,3 @@ Then open:
 GitHub: [hoomanv3xo](https://github.com/hoomanv3xo)
 Website: [hooman-codes.ca](http://www.hooman-codes.ca)
 
-## License
-
-Add a license of your choice (for example MIT) if you plan to share this code publicly.
