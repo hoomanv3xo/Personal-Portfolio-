@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+<style>
+
+/* ===== GLOBAL ===== */
+body {
+    background: radial-gradient(circle at top, #0F0FFF, #000);
+    color: white;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Animated neon background */
+body::before {
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: linear-gradient(45deg, #00f0ff, #ff00ff, #00f0ff);
+    opacity: 0.05;
+    animation: moveBg 20s linear infinite;
+    z-index: 0;
+}
+
+@keyframes moveBg {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== HERO ===== */
+.hero {
+    text-align: center;
+    padding: 100px 20px 60px;
+    position: relative;
+    z-index: 1;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    background: linear-gradient(45deg, #00f0ff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    color: #bbb;
+}
+
+/* ===== PROJECT CARDS ===== */
+.project-card {
+    background: #111;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: 0.4s;
+    cursor: pointer;
+    position: relative;
+
+    /* animation start state */
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+/* visible after scroll */
+.project-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* image */
+.project-img {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    transition: 0.4s;
+}
+
+/* hover */
+.project-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow:
+        0 0 15px #00f0ff,
+        0 0 30px #ff00ff;
+}
+
+.project-card:hover .project-img {
+    transform: scale(1.1);
+}
+
+/* neon border */
+.project-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    padding: 2px;
+    background: linear-gradient(45deg, #00f0ff, #ff00ff);
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.project-card:hover::before {
+    opacity: 1;
+}
+
+/* ===== TEXT VISIBILITY FIX ===== */
+.project-card .card-body {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(6px);
+}
+
+.project-card h5 {
+    color: #ffffff;
+    font-weight: 600;
+    text-shadow: 0 0 6px rgba(0, 240, 255, 0.4);
+}
+
+.project-card p {
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* ===== BUTTON ===== */
+.btn-neon {
+    background: linear-gradient(45deg, #00f0ff, #ff00ff);
+    border: none;
+    color: white;
+}
+
+.btn-neon:hover {
+    opacity: 0.85;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    text-align: center;
+    padding: 40px;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .project-img {
+        height: 180px;
+    }
+}
+
+</style>
+
+<!-- HERO -->
+
+<section class="hero">
+    <h1>Projects</h1>
+    <p>Creative developer building modern web experiences</p>
+</section>
+
+<!-- PROJECTS -->
+
+<div class="container" style="position: relative; z-index:1;">
+    <div class="row">
+        {% for project in projects %}
+        <div class="col-md-4 mb-4">
+
+
+        <div class="card project-card" onclick="clickEffect(this)">
+
+            {% if project.image %}
+                <img src="{{ project.image.url }}" class="project-img">
+            {% endif %}
+
+            <div class="card-body">
+                <h5>{{ project.title }}</h5>
+                <p>{{ project.description|cut:"---"|truncatechars:100 }}</p>
+                <a href="{% url 'projects:project_detail' project.pk %}" class="btn btn-neon">
+                View Project
+                
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+    © 2026 • Your Portfolio
+</div>
+
+<script>
+
+/* CLICK EFFECT */
+function clickEffect(card) {
+    card.style.transform = "scale(0.95)";
+    setTimeout(() => {
+        card.style.transform = "";
+    }, 150);
+}
+
+/* SCROLL ANIMATION */
+const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.classList.add("show");
+            }, index * 150);
+        }
+    });
+}, { threshold: 0.2 });
+
+document.querySelectorAll(".project-card").forEach(card => {
+    observer.observe(card);
+});
+
+</script>
+
+{% endblock %}

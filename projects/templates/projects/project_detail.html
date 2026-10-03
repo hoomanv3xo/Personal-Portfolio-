@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+<style>
+
+/* ===== GLOBAL ===== */
+body {
+    background: radial-gradient(circle at top, #0a0a0f, #000);
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Animated neon background */
+body::before {
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: linear-gradient(45deg, #00f0ff, #ff00ff, #00f0ff);
+    opacity: 0.05;
+    animation: moveBg 20s linear infinite;
+    z-index: 0;
+}
+
+@keyframes moveBg {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ===== CONTAINER ===== */
+.detail-container {
+    position: relative;
+    z-index: 1;
+    padding: 60px 20px;
+}
+
+/* ===== TITLE ===== */
+.title {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, #00f0ff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===== IMAGE ===== */
+.project-image {
+    width: 100%;
+    border-radius: 12px;
+    transition: 0.4s;
+}
+
+.project-image:hover {
+    transform: scale(1.03);
+    box-shadow:
+        0 0 20px #00f0ff,
+        0 0 40px #ff00ff;
+}
+
+/* ===== CARD ===== */
+.detail-card {
+    background: rgba(0,0,0,0.65);
+    border-radius: 14px;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+    position: relative;
+}
+
+/* Neon border */
+.detail-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    padding: 2px;
+    background: linear-gradient(45deg, #00f0ff, #ff00ff);
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    opacity: 0.4;
+}
+
+/* ===== TEXT ===== */
+h5 {
+    color: #00f0ff;
+    margin-top: 15px;
+}
+
+p {
+    color: #ddd;
+    line-height: 1.6;
+}
+
+/* ===== BUTTON ===== */
+.btn-neon {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 25px;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #00f0ff, #ff00ff);
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-neon:hover {
+    box-shadow:
+        0 0 10px #00f0ff,
+        0 0 25px #ff00ff;
+}
+
+/* ===== ANIMATION ===== */
+.fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.6s ease;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+    }
+}
+
+</style>
+
+<div class="container detail-container">
+
+```
+<!-- TITLE -->
+<h1 class="title fade-in">{{ project.title }}</h1>
+
+<div class="row mt-4">
+
+    <!-- IMAGE -->
+    <div class="col-md-8 fade-in">
+        {% if project.image %}
+            <img src="{{ project.image.url }}" class="project-image">
+        {% endif %}
+    </div>
+
+    <!-- DETAILS -->
+    <div class="col-md-4 fade-in">
+        <div class="detail-card">
+
+            <h5>About the project</h5>
+            <p>{{ project.description }}</p>
+
+            <h5>Technology Used</h5>
+            <p>{{ project.technology }}</p>
+
+            <!-- BACK BUTTON (correct Django namespaced URL) -->
+            <a href="{% url 'projects:project_index' %}" class="btn-neon">
+                ← Back to Projects
+            </a>
+
+        </div>
+    </div>
+
+</div>
+```
+
+</div>
+
+<script>
+
+/* Scroll animation */
+const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.classList.add("show");
+            }, index * 150);
+        }
+    });
+}, { threshold: 0.2 });
+
+document.querySelectorAll(".fade-in").forEach(el => {
+    observer.observe(el);
+});
+
+</script>
+
+{% endblock %}
+

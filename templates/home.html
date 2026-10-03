@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+
+<style>
+
+/* Override base container to full width */
+body.container {
+    max-width: 100%;
+    padding: 0;
+}
+
+/* ===== BACKGROUND ===== */
+body {
+    background: radial-gradient(circle at top, #0a0a0f, #000);
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Animated neon background */
+body::before {
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: linear-gradient(45deg, #00f0ff, #ff00ff, #00f0ff);
+    opacity: 0.05;
+    animation: moveBg 20s linear infinite;
+    z-index: 0;
+}
+
+@keyframes moveBg {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,240,255,0.2);
+}
+
+/* ===== HERO ===== */
+.hero {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    background: linear-gradient(45deg, #00f0ff, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    color: #bbb;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    max-width: 600px;
+}
+
+/* ===== BUTTON ===== */
+.btn-neon {
+    margin-top: 30px;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    border: none;
+    color: white;
+    text-decoration: none;
+
+    background: linear-gradient(45deg, #00f0ff, #ff00ff);
+    transition: 0.3s;
+}
+
+.btn-neon:hover {
+    transform: scale(1.05);
+    box-shadow:
+        0 0 10px #00f0ff,
+        0 0 25px #ff00ff;
+}
+
+/* ===== SECTION ===== */
+.section {
+    padding: 80px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.section h2 {
+    margin-bottom: 20px;
+    color: #00f0ff;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    text-align: center;
+    padding: 30px;
+    color: #777;
+    position: relative;
+    z-index: 1;
+}
+
+</style>
+
+<!-- HERO -->
+
+<section class="hero">
+    <h1>Hooman's Portfolio</h1>
+    <p>
+    Hi, My name is Hooman and I am a Software Developer in Toronto, Canada.
+    </p>
+    <p>I hold a Certificate in Computer Programming Applications from Toronto Metropolitan University and a Diploma in Computer Network Technician (MCSE Specialization) from CDI College.
+    </p>
+    <p>Currently, I am studying towards an Associate Degree in Business Administration from University of the People.
+    <br>Enjoy your visit.
+    </p>
+
+
+
+<a href="{% url 'projects:project_index' %}" class="btn-neon">Projects 🚀</a>
+
+
+</section>
+
+<!-- OPTIONAL ABOUT SECTION -->
+
+<section class="section">
+    <h2>Links</h2>
+    <p>
+        <a href="http://www.github.com/hoomanv3xo">GitHub</a>
+        <a href="http://www.hooman-codes.ca">My Page</a>
+
+        
+    </p>
+</section>
+
+<!-- FOOTER -->
+
+<div class="footer">
+    © 2026 • Your Portfolio
+</div>
+
+{% endblock %}
